@@ -3,5 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "src/index.ts"
+  "main": "src/index.ts",
+  "dependencies": {
+    "eventemitter3": "^5.0.4",
+    "neverthrow": "^8.2.0"
+  }
 }
