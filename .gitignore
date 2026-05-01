@@ -4,3 +4,23 @@ dist/
 .turbo/
 data/projects/*.json
 data/telemetry/*.json
+
+# Environment Files
+.env
+.env.local
+.env.production
+.env.development
+.env.test
+
+# Logs
+logs
+*.log
+
+# Coverage
+coverage
+
+# Turbo
+.turbo
+
+# Build
+dist
