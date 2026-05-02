@@ -1,40 +1,52 @@
-export class Result<T> {
-  public readonly isSuccess: boolean;
-
-  public readonly isFailure: boolean;
-
-  public readonly error?: string;
-
-  private readonly value?: T;
-
+export class Result<TValue, TError extends Error> {
   private constructor(
-    isSuccess: boolean,
-    error?: string,
-    value?: T
-  ) {
-    this.isSuccess = isSuccess;
-    this.isFailure = !isSuccess;
-    this.error = error;
-    this.value = value;
+    private readonly value: TValue | null,
+    private readonly error: TError | null
+  ) {}
 
-    Object.freeze(this);
+  public static success<TValue>(
+    value: TValue
+  ): Result<TValue, never> {
+    return new Result<TValue, never>(
+      value,
+      null as never
+    );
   }
 
-  public getValue(): T {
-    if (!this.isSuccess || this.value === undefined) {
+  public static failure<TError extends Error>(
+    error: TError
+  ): Result<never, TError> {
+    return new Result<never, TError>(
+      null as never,
+      error
+    );
+  }
+
+  public isSuccess(): boolean {
+    return this.error === null;
+  }
+
+  public isFailure(): boolean {
+    return !this.isSuccess();
+  }
+
+  public getValue(): TValue {
+    if (this.isFailure()) {
       throw new Error(
-        "Cannot retrieve value from failed result."
+        "Cannot retrieve the value from a failed result."
       );
     }
 
-    return this.value;
+    return this.value as TValue;
   }
 
-  public static ok<U>(value?: U): Result<U> {
-    return new Result<U>(true, undefined, value);
-  }
+  public getError(): TError {
+    if (this.isSuccess()) {
+      throw new Error(
+        "Cannot retrieve the error from a successful result."
+      );
+    }
 
-  public static fail<U>(error: string): Result<U> {
-    return new Result<U>(false, error);
+    return this.error as TError;
   }
 }
