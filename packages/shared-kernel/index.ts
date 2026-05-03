@@ -4,3 +4,4 @@ export * from "./src/utilities";
 export * from "./src/timestamps";
 export * from "./src/types";
 export * from "./src/primitives";
+export * from "./src/specifications";
