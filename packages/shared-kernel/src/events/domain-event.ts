@@ -1,7 +1,15 @@
-export interface DomainEvent {
-  eventId: string;
+import { UniqueEntityId } from "../identifiers";
 
-  occurredAt: Date;
+export abstract class DomainEvent {
+  public readonly occurredOn: Date;
 
-  eventName: string;
+  protected constructor(
+    public readonly aggregateId: UniqueEntityId
+  ) {
+    this.occurredOn = new Date();
+  }
+
+  public get eventName(): string {
+    return this.constructor.name;
+  }
 }
